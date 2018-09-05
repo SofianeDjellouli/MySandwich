@@ -25,6 +25,9 @@ class Option(models.Model):
 
 
 class FinProduit(models.Model):
+
+    # This model attaches several options and a quantity to each product
+
     finprod = models.ForeignKey(DefProduit, on_delete=models.CASCADE)
     finopt = models.ManyToManyField(Option, blank=True)
     quantite = models.IntegerField(default=1)
@@ -38,6 +41,10 @@ class FinProduit(models.Model):
 
 
 class Panier(models.Model):
+
+    # Each cart has a user and several final products. 
+    # We use IP to retrieve clients that aren't logged.
+
     client = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     commande = models.ManyToManyField(FinProduit)
     IP = models.CharField(max_length=50, null=True)
@@ -48,14 +55,14 @@ class Panier(models.Model):
     
     @property
     def hors_taxes(self):
-        #tester avec Sum de l'API queryset
         return round(sum([sum([finproduit.quantite * finproduit.finprod.prix / Decimal(1.055) for finproduit in self.commande.all() if finproduit.finprod.categorie == 'Boisson']),
             sum([finproduit.quantite * finproduit.finprod.prix / Decimal(1.1) for finproduit in self.commande.all() if finproduit.finprod.categorie != 'Boisson'])]), 2)        
 
     def add_item(self, item):
         
-        #Si item est d�j� dans panier avec les memes options : incr�menter la quantiter. sinon ajouter item.
-        
+        # if the final product is already in the cart, increment its number
+        # otherwise, add it to the commande
+
         if self.commande.filter(finprod=item.finprod):
             for produit in self.commande.filter(finprod=item.finprod):
                 if list(produit.finopt.all()) == list(item.finopt.all()):

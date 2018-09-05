@@ -26,13 +26,17 @@ def tobecontinued(request):
     return render(request, 'tobecontinued/tobecontinued.html')
 
 class ProduitList(TemplateView):
-    template_name = 'mainapp/main.html'
-    
+
+    #returns a list of the categories of products
+
+    template_name = 'mainapp/main.html'    
     def c(self):
         return set(DefProduit.objects.values_list('categorie', flat=True).reverse())
              
 def categorie(request, categorie):
-    #accepter lower et espaces dans regex slug 
+    
+    #returns a list of products for each category
+    
     return render(request, 'mainapp/liste_produit.html', 
         {'product_list': DefProduit.objects.filter(categorie=categorie),
          'categorie': categorie})
@@ -41,42 +45,61 @@ def produit(request, categorie, produit):
     if request.method == 'POST':
         finproduitform = FinProduitForm(request.POST)
         if finproduitform.is_valid():
-            #pour que chaque instance de FinProduit soit unique
+            #if a final product with the same product already exists
             if FinProduit.objects.filter(finprod=finproduitform.cleaned_data['finprod']):
                 for produit in FinProduit.objects.filter(finprod=finproduitform.cleaned_data['finprod']):
+                    # if it has the same options
                     if produit.finopt.all() == finproduitform.cleaned_data['finopt']:
+                        # if it has the same quantity, this final product instance is keeped
+                        # to increase the quantity
                         if produit.quantite == finproduitform.cleaned_data['quantite']:
                             instance = produit
+                        # otherwise a new instance is saved to increase the quantity
                         else:
                             finproduitform.save(commit=False)
                             finproduitform.save()
                             finproduitform.save_m2m()
                             instance = finproduitform.instance
+                    # otherwise a new instance is saved for the new final product
                     else:
                         finproduitform.save(commit=False)
                         finproduitform.save()
                         finproduitform.save_m2m()
-                        instance = finproduitform.instance                     
+                        instance = finproduitform.instance    
+            # otherwise a new instance is saved for the new final product     
             else:
                 finproduitform.save(commit=False)
                 finproduitform.save()
                 finproduitform.save_m2m()
-                instance = finproduitform.instance            
+                instance = finproduitform.instance   
+
             if request.user.is_authenticated:
                 if not Panier.objects.filter(IP=request.META.get('REMOTE_ADDR'), client=request.user):
+                    # if the user is authenticated and created a cart when he wasn't,
+                    # this cart is attributed to his user instance
                     Panier.objects.filter(IP=request.META.get('REMOTE_ADDR')).update(client=request.user)
+                # otherwise a cart is getted or created and the retreived instance from the form is added
                 Panier.objects.get_or_create(IP=request.META.get('REMOTE_ADDR'), client=request.user)[0].add_item(instance)
+            # otherwise a cart is getted or created and the retreived instance from the form is added
+            # is the user isn't authenticated his IP adress is used to create his cart
             else:
                 Panier.objects.get_or_create(IP=request.META.get('REMOTE_ADDR'), client=None)[0].add_item(instance)
             return redirect('panier')
     return render(request, 'mainapp/produit.html', {'produit': DefProduit.objects.get(produit=produit),
                                                  'options': Option.objects.all()})
-"""
-situations possibles :
-- panier anonyme > panier client 
-- panier client > panier anonyme > panier client
-"""
+
 def panier(request):
+
+    """
+    This view handles two situation:
+        -if the user has a cart without being logged and then logged,
+        his previous cart is attributed to his user instance
+        (anonymous cart => client cart)
+        -if he is logged and has a cart, then unlogged and add new items,
+        and the logged, all his items are fusioned in the same cart
+        (client cart => anonymous cart => client cart)
+    """
+
     if request.user.is_authenticated:
         if not Panier.objects.filter(IP=request.META.get('REMOTE_ADDR'), client=request.user):
             Panier.objects.filter(IP=request.META.get('REMOTE_ADDR')).update(client=request.user)
