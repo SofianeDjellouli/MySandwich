@@ -1,0 +1,48 @@
+{% extends './navbar.html' %}
+{% block content %}
+	<div class="container">
+		<h4 class="d-block display-4 text-center">Votre panier
+		</h4>
+		<div class="d-flex flex-wrap justify-content-center">
+			{% for object in panier %}
+				<div class="card m-2" style="width: 18rem;">
+					<img class="card-img-top" src="https://www.bretzelburgard.fr/snacking/649-large_default/coca-33cl.jpg" alt="Card image">
+					<div class="card-body text-center">
+						<h4 class="card-title">{{ object.quantite }} {{object.finprod }}</h4>
+						
+						<h5>Options</h5>
+						<ul class="list-group list-group-flush w-50 mx-auto">
+							{% for objet in object.finopt.all %}
+								<li class="list-group-item">{{objet}}</li>
+							{% endfor %}
+						</ul>
+						<form method="POST" action="{% url 'panier' %}">
+							{% csrf_token %}
+							<div class="form-group row align-items-center mt-4">
+								<label for="{{ object.id }}" class="col-form-label col-sm-4">Quantity</label>
+								<input type="number" name="quantite" value="{{ object.quantite }}" class="form-control col-sm-3 mr-3" id=""{{ object.id }}"" />
+								<button type="submit" class="btn btn-success  col-sm-4">Update</button>
+								<input type="hidden" name="pk" value="{{ object.pk }}" />
+							</div>
+						</form>
+						<div class="row align-items-center justify-content-center">
+							<div class="align-middle col-sm-7">Subtotal: {{object.subtotal}} €</div>
+							<form method="POST" name="" action ="{% url 'delete' pk=object.pk %}" class="align-middle col-sm-5 align-items-center justify-content-center row" >
+								{% csrf_token %}
+								<div class="form-group align-items-center justify-content-center row ">
+									<button type="submit" class="btn btn-warning col-12 mt-3">Delete Item</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="text-center">
+			<p> Prix hors taxes : {{ hors_taxes }} €</p>
+			<p> Prix total : {{ total }} €</p>
+			<a class="btn btn-outline-success mb-5" href="{% url 'tobecontinued' %}" role="button">Validate your Cart</a>
+		</div>
+		
+	</div>
+{% endblock %}

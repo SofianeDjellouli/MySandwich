@@ -1,0 +1,18 @@
+{% extends './navbar.html' %}
+{% block content %}
+	<div class="container">
+		<h1 class="display-3 text-center">{% if user.is_authenticated %}Hi {{ user }}!{% endif %}</h1>
+		<div class="d-flex flex-wrap justify-content-center">
+			{% for element in view.c %}
+				<div class="card m-2" style="width: 18rem;">
+					<img class="card-img-top" src="https://www.bretzelburgard.fr/snacking/649-large_default/coca-33cl.jpg" alt="Card image">
+					<div class="card-body text-center">
+						<h4 class="card-title">{{ element }}</h4>
+						<p class="card-text">Lorem Ipsum is simply dummy text</p>
+						<a href="/{{ element }}/" class="btn btn-primary ">{{ element }}</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

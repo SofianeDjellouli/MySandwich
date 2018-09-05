@@ -1,0 +1,43 @@
+{% extends '../mainapp/navbar.html' %}
+{% block content %}
+	<div class="container">
+		<h4 class="d-block display-4 text-center mt-5 mb-5">Sign up to MySandwitch
+		</h4>
+		<form method="post" class="text-center ">
+			{% csrf_token %}
+			<div class="form-group row justify-content-center">
+				<label for="id_username" class="col-form-label col-sm-4">Nom d&#39;utilisateur :</label>
+				<input type="text" name="username" maxlength="150" autofocus required id="id_username">
+			</div>
+			<small class="form-text text-muted d-block text-center helptext">Requis. 150 caractères maximum. Uniquement des lettres, nombres et les caractères « @ », « . », « + », « - » et « _ ».</small>
+			<br>
+			<div class="form-group row justify-content-center">
+				<label for="id_email" class="col-form-label col-sm-4">Email :</label>
+				<input type="email" name="email" maxlength="254" required id="id_email" class="form-control col-sm-4">
+			</div>
+			<small class="form-text text-center text-muted d-block helptext">Required. Inform a valid email address.</small>
+			<br>
+			<div class="form-group row justify-content-center">
+				<label for="id_password1" class="col-form-label col-sm-4">Mot de passe :</label>
+				<input type="password" name="password1" required id="id_password1" class="form-control col-sm-4">
+			</div>
+			<small class="form-text text-center text-muted d-block helptext">
+			<ul>
+				<li>Votre mot de passe ne peut pas trop ressembler à vos autres informations personnelles.</li>
+				<li>Votre mot de passe doit contenir au minimum 8 caractères.</li>
+				<li>Votre mot de passe ne peut pas être un mot de passe couramment utilisé.</li>
+				<li>Votre mot de passe ne peut pas être entièrement numérique.</li>
+			</ul>
+			</small>
+			<div class="form-group row justify-content-center">
+				<label for="id_password2" class="col-form-label col-sm-4">Confirmation du mot de passe :</label>
+				<input type="password" name="password2" required id="id_password2" class="form-control col-sm-4">
+			</div class="justify-content-center">
+			<small class="form-text text-center text-muted d-block helptext">Saisissez le même mot de passe que précédemment, pour vérification.</small>
+			<br>
+			<div>
+				<button type="submit" class="btn btn-primary mb-5">Sign up</button>
+			</div>
+		</form>
+	</div>
+{% endblock %}

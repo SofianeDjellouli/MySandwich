@@ -1,0 +1,38 @@
+{% extends '../mainapp/navbar.html' %}
+{% block content %}
+  <div class="container">
+    <h4 class="d-block display-4 text-center mt-5 mb-5">Login to MySandwitch
+    </h4>
+    {% if form.errors %}
+      <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    {% if next %}
+      {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+      {% else %}
+        <p>Please login to see this page.</p>
+      {% endif %}
+    {% endif %}
+    <form method="post" action="{% url 'login' %}" class="text-center ">
+      {% csrf_token %}
+      <div class="form-group row justify-content-center">
+        <label for="id_username" class="col-form-label col-sm-2">Username:
+        </label >
+        <input type="text" name="username" required="" id="id_username" class="form-control col-sm-2">
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="id_password" class="col-form-label col-sm-2">Password:</label>
+        <input type="password" name="password" required="" id="id_password" class="form-control col-sm-2">
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        {# Assumes you setup the password_reset view in your URLconf #}
+        <p class="text-right mt-2"><a href="{% url 'tobecontinued' %}">Lost password?</a></p>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+    </div>
+  </form>
+  
+</div>
+{% endblock %}

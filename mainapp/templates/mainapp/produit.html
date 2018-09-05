@@ -1,0 +1,59 @@
+{% extends './navbar.html' %}
+{% block content %}
+  <div class="container">
+    <h4 for="id_finopt" class="d-block display-4 text-center">Customize your {{ produit.produit|lower }}</h4>
+    <form action="" method="post" class="text-center">
+      {% csrf_token %}
+      {% if produit.categorie != 'Drinks'%}
+        <div class="form-group">
+          <label class="d-block">Bread</label>
+          {% for option in options %}
+            {% if option.type == 'Bread' %}
+              <div class="form-check d-inline-block">
+                <label class="btn btn-outline-primary">
+                  {{option.nom}}
+                  <input type="radio" name="finopt" class="badgebox" value="{{ option.id }}" onchange="($(this).prop('checked') ? $(this).parent().css({'background-color': '#007bff', 'color': 'white'}) :
+                  $(this).parent().css({'background-color': 'white', 'color': '#007bff'
+                  }))">
+                </label>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <label class="d-block">Rawness</label>
+          {% for option in options %}
+            {% if option.type == 'Crudités' %}
+              <div class="form-check d-inline-block">
+                <label class="btn btn-outline-primary">
+                  {{option.nom}}
+                  <input type="checkbox" name="finopt" class="badgebox" value="{{ option.id }}">
+                </label>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <label class="d-block">Sauce</label>
+          {% for option in options %}
+            {% if option.type == 'Sauce' %}
+              <div class="form-check d-inline-block">
+                <label class="btn btn-outline-primary">
+                  {{option.nom}}
+                  <input type="checkbox" name="finopt" class="badgebox" value="{{ option.id }}">
+                </label>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="form-group text-center">
+        <label class="d-block" for="id_quantite">Quantity</label>
+        <input type="number" class="form-control w-25 mx-auto" name="quantite" id="id_quantite" value="1" />
+      </div>
+      <input type="hidden" name="finprod" required id="id_finprod"
+      value="{{ produit.id }}"/>
+      <button type="submit" class="btn btn-primary">Add to my Cart</button>
+    </form>
+  </div>
+{% endblock%}

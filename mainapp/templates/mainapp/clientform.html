@@ -1,0 +1,3 @@
+<form method="POST">{% csrf_token %}
+{{ clientform.as_p }}
+<input type="submit" value="Valider" action="{% url 'cartebancaireformview' %}"/></form>

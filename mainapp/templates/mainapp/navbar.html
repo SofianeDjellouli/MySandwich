@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("input[type=checkbox]").change(function() {
+					if (this.checked) {
+						$(this).parent().css({"background-color": "#007bff",
+							"color": "white"})
+					} else {
+						$(this).parent().css({"background-color": "white",
+							"color": "#007bff"})
+					}
+				})
+			})
+		</script>
+		<style type="text/css">
+		/* Hiding the checkbox, but allowing it to be focused */
+		.badgebox {
+			opacity: 0;
+		}
+		input[type=number]::-webkit-inner-spin-button {
+		opacity: 0.5
+		}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-dark bg-dark sticky-top">
+			<a class="navbar-brand" href="/" style="width: 5%;    font-size: 35px;">
+				<img src="https://image.flaticon.com/icons/svg/135/135593.svg" style="width: 100%">
+				My Sandwitch
+			</a>
+			<div class="justify-content-right">
+				{% if user.is_authenticated %}
+					<a class="btn btn-outline-success" href="{% url 'panier' %}" role="button">My Cart</a>
+					<a class="btn btn-outline-danger" href="{% url 'logout' %}" role="button">Logout</a>
+				{% else %}
+					<a class="btn btn-outline-success" href="{% url 'login' %}" role="button">Login</a>
+					<a class="btn btn-outline-success" href="{% url 'signup' %}" role="button">Sign up</a>
+				{% endif %}
+			</div>
+		</nav>
+	{% block content %} {% endblock%}
+</body>
+</html>

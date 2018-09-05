@@ -1,0 +1,23 @@
+property() : builtin class utilisée comme décorateur avec 4 méthodes : fget, fset, fdel et doc,
+pour appliquer ces méthodes aux attributs sans passer par l'instance ou le constructeur.
+permet d'appeler une méthode comme étant un attribut(get) ou de changer un attribut directement(set).
+méthodes pouvant etre overridées.
+@property est un getter.
+@decorator: appliquer une fonction à une fonction
+_variable :  "La convention veut qu'on n'accède pas, depuis l'extérieur de la classe, 
+à un attribut ou un méthode commençant par un souligné _."
+class Meta : spécifique à django : "Model metadata is “anything that’s not a field"
+__unicode__ : avant python 3
+ContentType
+lazy
+reverse
+get_absolute_url
+on_delete
+onetoone vs foreignkey
+quand créer des variables
+structure du site : banque,  formatée pour plateforme, profil,
+présentation options, caracteres speciaux,
+tests,
+panier cookies?
+
+
