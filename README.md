@@ -1,4 +1,4 @@
-# MySandwitch
+# MySandwich
 ## Stack
 * Django
 * Bootstrap
