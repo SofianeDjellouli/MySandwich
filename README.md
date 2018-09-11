@@ -5,7 +5,9 @@
 ## Live
 https://mysandwich.herokuapp.com/
 ## User stories
-1) A user can login and logout.
+1) A user can login and logout. You can do so with the following accreditentials:  
+* username: user  
+* password: newuser18!
 2) He gets access to a list of product categories.
 3) In each category he gets access to a list of products.
 4) He can add options to each products.
