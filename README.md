@@ -3,7 +3,7 @@
 * Django
 * Bootstrap
 ## Live
-https://mysandwitch.herokuapp.com/
+https://mysandwich.herokuapp.com/
 ## User stories
 1) A user can login and logout.
 2) He gets access to a list of product categories.
